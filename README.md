@@ -1,5 +1,3 @@
-# DoctorGo
-<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
@@ -166,7 +164,7 @@
   <script>
     // ========= Config =========
     const WHATSAPP_NUMBER = '55XXXXXXXXXXX'; // <-- Substitua pelo número oficial do DoctorGo (somente dígitos com DDI 55)
-    const SPECIALTIES = ['Laser', 'Ginecologia', 'Odontologia', 'Fisioterapia', 'Dermatologia'];
+   const SPECIALTIES = ['Laser', 'Ginecologia', 'Odontologia', 'Fisioterapia', 'Dermatologia', 'Cardiologia'];
     const UFS = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 
     // Médicos de exemplo (troque pelos reais ou traga via API/Firebase)
@@ -178,7 +176,8 @@
       { uid:'d5', name:'Dr. Lucas Odonto', specialty:'Odontologia', city:'Curitiba', uf:'PR', ratingAvg:4.5, ratingCount:12, premium:false, priceHint:'A partir de R$ 180' },
       { uid:'d6', name:'Dra. Mari Derma', specialty:'Dermatologia', city:'Belo Horizonte', uf:'MG', ratingAvg:4.8, ratingCount:51, premium:true, priceHint:'A partir de R$ 230' },
       { uid:'d7', name:'Dr. Paulo Físio', specialty:'Fisioterapia', city:'Salvador', uf:'BA', ratingAvg:4.4, ratingCount:22, premium:false, priceHint:'A partir de R$ 150' },
-    ];
+    ];{ uid:'d8', name:'Dra. Bruna Nascimento', specialty:'Ginecologia', city:'São José dos Campos', uf:'SP', ratingAvg:4.9, ratingCount:12, premium:true, priceHint:'A partir de R$ 250' },
+
 
     // ========= Helpers =========
     const $ = (s)=>document.querySelector(s);
@@ -274,17 +273,40 @@
     }
 
     function preencherWhatsApp(doc){
-      // Preenche automaticamente cidade/especialidade no form de WhatsApp
-      $('#f_cidade').value = doc.city;
-      const msg = `Olá, quero agendar consulta com ${doc.name} (${doc.specialty}) em ${doc.city}/${doc.uf}.`;
-      $('#f_sintomas').value = msg;
-      window.scrollTo({top: document.getElementById('waForm').offsetTop - 80, behavior:'smooth'});
-    }
+  // Salva o WhatsApp do médico escolhido
+  window.__selectedDocPhone = doc.phone || '';
+
+  // Preenche automaticamente cidade/especialidade no form de WhatsApp
+  $('#f_cidade').value = doc.city;
+  const msg = `Olá, quero agendar consulta com ${doc.name} (${doc.specialty}) em ${doc.city}/${doc.uf}.`;
+  $('#f_sintomas').value = msg;
+  window.scrollTo({top: document.getElementById('waForm').offsetTop - 80, behavior:'smooth'});
+}
+
 
     function sendWhatsApp(data){
-      if(!WHATSAPP_NUMBER || WHATSAPP_NUMBER.includes('X')){
-        alert('Defina o WHATSAPP_NUMBER no código antes de enviar.');
-        return;
+  // Vai primeiro para o médico selecionado (ao clicar em "Agendar")
+  const sel = (window.__selectedDocPhone && /^\d{11,13}$/.test(window.__selectedDocPhone))
+    ? window.__selectedDocPhone
+    : '';
+
+  // Se ninguém foi selecionado, você pode (A) bloquear e avisar, ou (B) usar um número padrão
+  // A) Bloquear e pedir para escolher um médico:
+  if(!sel){
+    alert('Escolha um médico clicando no botão "Agendar" para enviar direto para ele.');
+    return;
+  }
+
+  const texto = `*DoctorGo – Nova solicitação*\n` +
+    `Nome: ${data.nome}\nIdade: ${data.idade}\nCidade: ${data.cidade}\n` +
+    `Condição: ${data.condicao}\nSintomas: ${data.sintomas}\n` +
+    `Melhor horário: ${data.horario}\n` +
+    `Contato: ${data.email} | ${data.tel}`;
+
+  const url = `https://wa.me/${sel}?text=${encodeURIComponent(texto)}`;
+  window.open(url, '_blank');
+}
+
       }
       const texto = `*DoctorGo – Nova solicitação*\n` +
         `Nome: ${data.nome}\nIdade: ${data.idade}\nCidade: ${data.cidade}\n` +
