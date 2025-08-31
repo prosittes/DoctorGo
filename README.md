@@ -176,7 +176,18 @@
       { uid:'d5', name:'Dr. Lucas Odonto',  specialty:'Odontologia',  city:'Curitiba',             uf:'PR', phone:'5541900000005', ratingAvg:4.5, ratingCount:12, premium:false, priceHint:'A partir de R$ 180' },
       { uid:'d6', name:'Dra. Mari Derma',   specialty:'Dermatologia', city:'Belo Horizonte',       uf:'MG', phone:'5531900000006', ratingAvg:4.8, ratingCount:51, premium:true,  priceHint:'A partir de R$ 230' },
       { uid:'d7', name:'Dr. Paulo Físio',   specialty:'Fisioterapia', city:'Salvador',             uf:'BA', phone:'5571900000007', ratingAvg:4.4, ratingCount:22, premium:false, priceHint:'A partir de R$ 150' },
-      { uid:'d8', name:'Dra. Bruna Nascimento', specialty:'Ginecologia', city:'São José dos Campos', uf:'SP', phone:'5512999999999', ratingAvg:4.9, ratingCount:12, premium:true, priceHint:'A partir de R$ 250' },
+     { uid:'d8',
+  name:'Dra. Bruna Nascimento',
+  specialty:'Laser',
+  city:'São José dos Campos',
+  uf:'SP',
+  phone:'5512997968579',
+  ratingAvg:5.0,
+  ratingCount:27,
+  premium:true,
+  priceHint:'Laserterapia • Tratamento de feridas, ILIB e terapias adjuvantes'
+},
+
     ];
 
     // ========= Helpers =========
